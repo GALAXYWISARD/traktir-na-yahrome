@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Трактир «На Яхроме» — Домашняя кухня, меню и заказ навынос</title>
+  <meta name="description" content="Трактир на Яхроме: горячие обеды, завтраки, фирменные блюда, выпечка и напитки. Актуальное меню с ценами и быстрый заказ навынос." />
+  <style>
+    :root {
+      --bg: #faf6f0;
+      --surface: #ffffff;
+      --surface-alt: #f3ebe0;
+      --primary: #7c2d12;
+      --primary-dark: #5c1f0a;
+      --accent: #d97706;
+      --text: #1f1916;
+      --muted: #6b5e55;
+      --border: #e6dacb;
+      --shadow: 0 6px 20px rgba(45, 25, 10, 0.07);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 90px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      background: linear-gradient(135deg, #431407 0%, #7c2d12 65%, #9a3412 100%);
+      color: #fff;
+      padding: 28px 16px 34px;
+      text-align: center;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    header h1 {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    header p {
+      max-width: 560px;
+      margin: 0 auto 18px;
+      font-size: 15px;
+      color: #fde68a;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--primary);
+    }
+
+    .btn-wa {
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .info-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: -18px;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      font-size: 14px;
+    }
+
+    .info-card strong {
+      display: block;
+      color: var(--primary);
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(250, 246, 240, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 15px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    .search-box:focus {
+      border-color: var(--primary);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      white-space: nowrap;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .category-section {
+      margin-bottom: 30px;
+    }
+
+    .category-header {
+      margin-bottom: 14px;
+    }
+
+    .category-header h2 {
+      font-size: 22px;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .category-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 12px;
+    }
+
+    .dish-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .dish-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .dish-name {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .dish-weight {
+      font-size: 12px;
+      background: var(--surface-alt);
+      color: var(--muted);
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .dish-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .dish-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .dish-price {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .add-btn {
+      background: var(--surface-alt);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      padding: 7px 13px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .add-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .qty-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .qty-control button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .cart-bar {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 28px);
+      max-width: 680px;
+      background: var(--primary-dark);
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 30;
+      cursor: pointer;
+    }
+
+    .cart-bar.visible {
+      display: flex;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .close-modal {
+      background: var(--surface-alt);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px 16px 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">Домашняя русская кухня • Заказ навынос</div>
+    <h1>Трактир «На Яхроме»</h1>
+    <p>Сытные завтраки, горячие блюда в горшочках, наваристые супы, свежая выпечка и натуральные напитки</p>
+    <div class="header-actions">
+      <a class="btn btn-light" href="tel:+79051376330">📞 Позвонить: 8 (905) 137-63-30</a>
+      <a class="btn btn-wa" href="https://wa.me/79051376330" target="_blank">💬 Написать в WhatsApp</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="info-bar">
+      <div class="info-card">
+        <strong>🕒 Фирменные блюда</strong>
+        Готовим с 09:00 до 20:30 (ожидание 15–20 мин)
+      </div>
+      <div class="info-card">
+        <strong>🥟 Хинкали и пельмени</strong>
+        Лепим сами • Заказ хинкали от 3 штук
+      </div>
+      <div class="info-card">
+        <strong>🛍 Быстрый предзаказ</strong>
+        Соберите блюда в корзину и отправьте в WhatsApp
+      </div>
+    </div>
+
+    <div class="controls">
+      <input type="text" id="searchInput" class="search-box" placeholder="🔍 Найти блюдо (например: борщ, хинкали, штрудель, кофе)..." />
+      <div class="tabs" id="categoryTabs"></div>
+    </div>
+
+    <main id="menuContainer"></main>
+
+    <footer>
+      <p><strong>Трактир «На Яхроме»</strong> • Приятного аппетита!</p>
+      <p style="margin-top: 6px;">Телефон для заказа и бронирования: <a href="tel:+79051376330" style="text-decoration: underline;">+7 (905) 137-63-30</a></p>
+    </footer>
+  </div>
+
+  <div class="cart-bar" id="cartBar" onclick="openModal()">
+    <div>
+      <strong id="cartCount">0 блюд</strong>
+      <div style="font-size: 12px; opacity: 0.85;">Нажмите, чтобы оформить заказ навынос</div>
+    </div>
+    <div style="font-size: 18px; font-weight: 800;" id="cartTotal">0 ₽ →</div>
+  </div>
+
+  <div class="modal-backdrop" id="orderModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Ваш заказ навынос</h3>
+        <button class="close-modal" onclick="closeModal()">✕</button>
+      </div>
+      <div id="cartItemsList"></div>
+      <div style="margin-top: 14px; font-weight: 800; font-size: 18px; display: flex; justify-content: space-between;">
+        <span>Итого:</span>
+        <span id="modalTotal">0 ₽</span>
+      </div>
+      <input type="text" id="clientName" class="input-field" placeholder="Ваше имя" />
+      <input type="text" id="clientComment" class="input-field" placeholder="Комментарий (во сколько заберёте, приборы и т.д.)" />
+      <button class="btn btn-wa" style="width: 100%; margin-top: 14px;" onclick="sendWhatsAppOrder()">
+        Отправить заказ в WhatsApp
+      </button>
+      <a href="tel:+79051376330" class="btn btn-light" style="width: 100%; margin-top: 8px; border: 1px solid var(--border);">
+        Или продиктовать по телефону
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const menuData = [
+      {
+        category: "Фирменные салаты",
+        note: "Фирменные блюда реализуются с 09:00 до 20:30. Время ожидания 15–20 минут.",
+        items: [
+          { id: "fs1", name: "Салат «Яхрома»", desc: "Говядина, микс салат, помидор, олива, масло, горчица", weight: "220 г", price: 480 },
+          { id: "fs2", name: "Салат «Охотничий»", desc: "Говядина, фасоль кр., перец болг., орехи грецкие, чеснок, зелень", weight: "200/30 г", price: 380 },
+          { id: "fs3", name: "Салат «Боярский»", desc: "Говядина, грибы, яйцо, сыр, лук, грецкий орех, майонез", weight: "160 г", price: 380 },
+          { id: "fs4", name: "Салат «Цезарь с курицей»", desc: "Филе куриное, айсберг, черри, пармезан, гренки, заправка", weight: "250 г", price: 480 },
+          { id: "fs5", name: "Салат «Кальмар с чукой и ореховым соусом»", desc: "Кальмары, огурец свеж., чука, перец болг., черри, ореховый соус", weight: "140 г", price: 400 },
+          { id: "fs6", name: "Салат «Греческий»", desc: "Айсберг, помидор, огурец, перец, брынза, лук, маслины", weight: "200/40 г", price: 430 },
+          { id: "fs7", name: "Сельдь под шубой", desc: "Картофель, свекла, сельдь, яйцо, лук, майонез", weight: "175 г", price: 350 },
+          { id: "fs8", name: "Традиционная Мимоза", desc: "Рыба консерв., картофель, морковь, яйцо, майонез", weight: "180 г", price: 350 }
+        ]
+      },
+      {
+        category: "Фирменные горячие блюда",
+        note: "Готовятся индивидуально с 09:00 до 20:30 (ожидание 15–20 мин).",
+        items: [
+          { id: "fg1", name: "Мясо по-Корюгински", desc: "Говядина с картофелем, грибами, помидорами, сыром и соусом", weight: "350 г", price: 850 },
+          { id: "fg2", name: "Мясо с овощами на сковороде", desc: "Свинина, перец болг., черри, фасоль струч., баклажан, лук и соус", weight: "350 г", price: 550 },
+          { id: "fg3", name: "Свинина «по-Купечески»", desc: "Свинина, запечённая с луком и майонезом, подаётся с картофелем", weight: "250/150 г", price: 480 },
+          { id: "fg4", name: "Мясо «по-Французски»", desc: "Свинина, сыр, лук", weight: "330 г", price: 480 },
+          { id: "fg5", name: "Скоблянка мясная на сковороде", desc: "Картофель, филе куриное, свинина, грибы шампиньоны, лук", weight: "300 г", price: 600 },
+          { id: "fg6", name: "Шницель «Нежный»", desc: "Куриное мясо, подаётся с овощами и картофелем по-деревенски", weight: "200/150 г", price: 450 },
+          { id: "fg7", name: "Рыба по-царски", desc: "Филе трески, запечённое с картофелем, грибами и сыром", weight: "400 г", price: 720 },
+          { id: "fg8", name: "Жарёха с грибами", desc: "Картофель, вешенки, лук репчатый, зелень", weight: "300 г", price: 380 },
+          { id: "fg9", name: "Кальмары с овощами на сковороде", desc: "Кальмары, брокколи, перец болгарский, лук, соевый соус", weight: "250 г", price: 450 },
+          { id: "fg10", name: "Драники (подаются со сметаной)", desc: "Реализуются до 16:30", weight: "200 г", price: 350 }
+        ]
+      },
+      {
+        category: "Завтраки",
+        note: "Яичницы, каши, сырники и домашние блинчики.",
+        items: [
+          { id: "z1", name: "Яичница из 2 яиц", desc: "Классическая глазунья", weight: "80 г", price: 140 },
+          { id: "z2", name: "Яичница из 2 яиц с сосиской", desc: "", weight: "80 г / 1 шт", price: 270 },
+          { id: "z3", name: "Яичница из 2 яиц с сарделькой", desc: "", weight: "80/100 г", price: 320 },
+          { id: "z4", name: "Яичница из 2 яиц с беконом", desc: "", weight: "80/50 г", price: 300 },
+          { id: "z5", name: "Добавка к яичнице: помидор", desc: "", weight: "45 г", price: 50 },
+          { id: "z6", name: "Добавка к яичнице: сыр", desc: "", weight: "20 г", price: 60 },
+          { id: "z7", name: "Каша молочная (рисовая)", desc: "", weight: "300 г", price: 180 },
+          { id: "z8", name: "Сырники со сметаной", desc: "", weight: "140/50 г", price: 280 },
+          { id: "z9", name: "Сырники со сгущённым молоком", desc: "", weight: "140/50 г", price: 280 },
+          { id: "z10", name: "Сырники с мёдом", desc: "", weight: "140/50 г", price: 280 },
+          { id: "z11", name: "Сырники с вареньем", desc: "", weight: "140/50 г", price: 280 },
+          { id: "z12", name: "Блины со сметаной", desc: "", weight: "80/40 г", price: 160 },
+          { id: "z13", name: "Блины со сгущённым молоком", desc: "", weight: "80/40 г", price: 160 },
+          { id: "z14", name: "Блины с маслом", desc: "", weight: "80/40 г", price: 160 },
+          { id: "z15", name: "Блины с мёдом", desc: "", weight: "80/40 г", price: 160 },
+          { id: "z16", name: "Блины с вареньем", desc: "", weight: "80/40 г", price: 180 },
+          { id: "z17", name: "Блинчики с творогом (со сметаной)", desc: "", weight: "160/40 г", price: 250 },
+          { id: "z18", name: "Блинчики с яйцом", desc: "", weight: "80/40/10 г", price: 230 },
+          { id: "z19", name: "Блинчики с мясом", desc: "", weight: "140/10 г", price: 350 }
+        ]
+      },
+      {
+        category: "Холодные закуски",
+        note: "Традиционные салаты на каждый день.",
+        items: [
+          { id: "hz1", name: "Салат «Оливье»", desc: "Картофель, колбаса в/к, морковь, яйцо, огурец, гор. зелёный, майонез", weight: "150 г", price: 200 },
+          { id: "hz2", name: "Салат «Крабовый»", desc: "Крабовые палочки, рис, огурец св., кукуруза консерв., яйцо, майонез", weight: "120/20 г", price: 200 },
+          { id: "hz3", name: "Салат «Мимоза»", desc: "Рыба консерв., картофель, морковь, яйцо, майонез", weight: "180 г", price: 350 },
+          { id: "hz4", name: "Салат овощной", desc: "Пекинская капуста, помидоры, огурцы, перец, лук, зелень", weight: "160/20 г", price: 250 },
+          { id: "hz5", name: "Салат из свежей капусты", desc: "Свежая капуста, морковь, уксус и раст. масло", weight: "120 г", price: 100 },
+          { id: "hz6", name: "Салат из свёклы с грецким орехом", desc: "Свекла, чеснок, грецкий орех, майонез", weight: "150 г", price: 100 },
+          { id: "hz7", name: "«Сельдь под шубой»", desc: "Картофель, свекла, сельдь, яйцо, лук, майонез", weight: "175 г", price: 350 }
+        ]
+      },
+      {
+        category: "Первые блюда",
+        note: "Наваристые супы по домашним рецептам.",
+        items: [
+          { id: "p1", name: "Щи «Боярские»", desc: "Из квашеной капусты со свининой и сметаной", weight: "500 г", price: 350 },
+          { id: "p2", name: "Борщ с говядиной", desc: "Подаётся со сметаной", weight: "370 г", price: 300 },
+          { id: "p3", name: "Солянка сборная мясная", desc: "Говядина, колбаски, колбаса копчёная, почки свиные, каперсы, маслины, огурцы солёные", weight: "370 г", price: 350 },
+          { id: "p4", name: "Суп-лапша домашняя", desc: "На курином бульоне, лапша собственного приготовления", weight: "370 г", price: 200 },
+          { id: "p5", name: "Харчо «Трактира на Яхроме»", desc: "Говядина, рис, чеснок, лук, специи", weight: "370 г", price: 250 },
+          { id: "p6", name: "Суп гороховый с копчёностями", desc: "Картофель, лук, морковь, кости копчёные", weight: "370 г", price: 250 }
+        ]
+      },
+      {
+        category: "Горячие вторые блюда и гарниры",
+        note: "Сытные мясные и рыбные блюда, горшочки и гарниры.",
+        items: [
+          { id: "g1", name: "Жаркое по-русски в горшочке", desc: "Картофель с говядиной, морковью, луком под майонезом", weight: "400 г", price: 450 },
+          { id: "g2", name: "Гуляш", desc: "Из говядины с томатным соусом", weight: "200 г", price: 400 },
+          { id: "g3", name: "Нежная телятина/лосятина с черносливом в горшочке", desc: "", weight: "350 г", price: 880 },
+          { id: "g4", name: "Голубцы со сметаной (2 шт.)", desc: "", weight: "270 г", price: 380 },
+          { id: "g5", name: "Отбивная на кости (свинина)", desc: "", weight: "200 г", price: 380 },
+          { id: "g6", name: "Эскалоп (свинина)", desc: "", weight: "150 г", price: 350 },
+          { id: "g7", name: "Котлета мясная", desc: "", weight: "70 г", price: 140 },
+          { id: "g8", name: "Котлета куриная", desc: "", weight: "70 г", price: 130 },
+          { id: "g9", name: "Рыба жареная (филе трески)", desc: "", weight: "110 г", price: 380 },
+          { id: "g10", name: "Почки в горшочке (в сметанном соусе)", desc: "", weight: "300 г", price: 300 },
+          { id: "g11", name: "Филе куриное в панировке", desc: "", weight: "120 г", price: 280 },
+          { id: "g12", name: "Чахохбили в горшочке", desc: "Рагу из птицы", weight: "250 г", price: 350 },
+          { id: "gar1", name: "Гарнир: Пюре картофельное", desc: "", weight: "200 г", price: 100 },
+          { id: "gar2", name: "Гарнир: Рис отварной", desc: "", weight: "150 г", price: 70 },
+          { id: "gar3", name: "Гарнир: Макароны отварные", desc: "", weight: "150 г", price: 70 },
+          { id: "gar4", name: "Гарнир: Каша гречневая рассыпчатая", desc: "", weight: "150 г", price: 70 },
+          { id: "gar5", name: "Гарнир: Картофель фри", desc: "Подаётся с кетчупом", weight: "150 г", price: 230 }
+        ]
+      },
+      {
+        category: "Хинкали и пельмени",
+        note: "Заказ хинкали от 3 штук. Подаются со сметаной.",
+        items: [
+          { id: "hp1", name: "Хинкали с говядиной (1 шт.)", desc: "Подаются со сметаной (минимальный заказ — 3 шт.)", weight: "1 шт.", price: 150 },
+          { id: "hp2", name: "Хинкали свинина-говядина (1 шт.)", desc: "Подаются со сметаной (минимальный заказ — 3 шт.)", weight: "1 шт.", price: 150 },
+          { id: "hp3", name: "Домашние пельмени свино-говяжьи", desc: "Подаются со сметаной", weight: "15 шт.", price: 380 }
+        ]
+      },
+      {
+        category: "Десерты, выпечка и мороженое",
+        note: "Свежая домашняя выпечка, торты и натуральное мороженое.",
+        items: [
+          { id: "d1", name: "Штрудель яблочный", desc: "С мороженым и топпингом", weight: "1 шт.", price: 380 },
+          { id: "d2", name: "Эклер со сливочным кремом", desc: "", weight: "1 шт.", price: 200 },
+          { id: "d3", name: "Чизкейк ванильный / шоколадный", desc: "", weight: "1 шт.", price: 350 },
+          { id: "d4", name: "Морковный торт", desc: "", weight: "125 г", price: 430 },
+          { id: "d5", name: "Медовик", desc: "", weight: "145 г", price: 300 },
+          { id: "v1", name: "Сосиска в тесте", desc: "", weight: "60/50 г", price: 130 },
+          { id: "v2", name: "Ватрушка с творогом", desc: "", weight: "120 г", price: 100 },
+          { id: "v3", name: "Пирожок печёный с капустой", desc: "", weight: "100 г", price: 80 },
+          { id: "v4", name: "Пирожок печёный с повидлом", desc: "", weight: "100 г", price: 80 },
+          { id: "v5", name: "Булочка домашняя", desc: "", weight: "100 г", price: 80 },
+          { id: "m1", name: "Мороженое натуральное «Сливочное»", desc: "", weight: "120 г", price: 300 },
+          { id: "m2", name: "Мороженое натуральное «Солёная карамель»", desc: "", weight: "120 г", price: 320 },
+          { id: "h1", name: "Хлеб ржаной / пшеничный", desc: "Цена за кусочек (6 ₽ ржаной / 8 ₽ пшеничный)", weight: "1 кус.", price: 8 },
+          { id: "h2", name: "Бутерброд с маслом", desc: "", weight: "25/20 г", price: 100 },
+          { id: "h3", name: "Бутерброд с сыром (с маслом)", desc: "", weight: "25/10/20 г", price: 130 }
+        ]
+      },
+      {
+        category: "Напитки и кофе",
+        note: "Авторские чаи, домашние лимонады, морсы и зерновой кофе.",
+        items: [
+          { id: "n1", name: "Натуральный фруктово-ягодный чай", desc: "На выбор: Облепиховый, Имбирный, Ягодный или Малина", weight: "800 мл", price: 500 },
+          { id: "n2", name: "Чайник листового чая", desc: "Ассам, 1002 ночи, Китайский лимонник, Порох, Эрл грей, Имбирь-лимон, Нахальный фрукт, Апельсин с корицей", weight: "800 мл", price: 350 },
+          { id: "n3", name: "Лимонад домашний", desc: "Ягодный микс, Тархун, Маракуйя, Малина, Ежевика, Мохито, Ананас, Мандарин", weight: "350 мл", price: 250 },
+          { id: "n4", name: "Горячий витаминный напиток", desc: "Имбирь-Апельсин, Клюква-Можжевельник, Малина-Мята", weight: "200 мл", price: 250 },
+          { id: "n5", name: "Молочный коктейль", desc: "", weight: "350 мл", price: 250 },
+          { id: "n6", name: "Чай с лимоном (чёрный / зелёный)", desc: "", weight: "220 мл", price: 50 },
+          { id: "n7", name: "Морс клюквенный", desc: "", weight: "200 мл", price: 80 },
+          { id: "n8", name: "Компот из сухофруктов", desc: "", weight: "200 мл", price: 80 },
+          { id: "n9", name: "Кофе «Эспрессо» (зерновой)", desc: "", weight: "75 мл", price: 150 },
+          { id: "n10", name: "Кофе «Американо» (зерновой)", desc: "", weight: "150 мл", price: 150 },
+          { id: "n11", name: "Кофе «Капучино» (зерновой)", desc: "", weight: "250 мл", price: 180 },
+          { id: "n12", name: "Кофе «Латте»", desc: "Карамельный латте — 220 ₽", weight: "200 мл", price: 200 }
+        ]
+      }
+    ];
+
+    let activeCategory = "Все";
+    let searchQuery = "";
+    const cart = {};
+
+    const allItemsMap = {};
+    menuData.forEach(sec => sec.items.forEach(item => { allItemsMap[item.id] = item; }));
+
+    function renderTabs() {
+      const tabsEl = document.getElementById("categoryTabs");
+      const cats = ["Все", ...menuData.map(c => c.category)];
+      tabsEl.innerHTML = cats.map(cat => `
+        <button class="tab-btn ${activeCategory === cat ? "active" : ""}" onclick="selectCategory('${cat}')">
+          ${cat}
+        </button>
+      `).join("");
+    }
+
+    function selectCategory(cat) {
+      activeCategory = cat;
+      renderTabs();
+      renderMenu();
+    }
+
+    function changeQty(id, delta) {
+      cart[id] = (cart[id] || 0) + delta;
+      if (cart[id] <= 0) delete cart[id];
+      renderMenu();
+      updateCartUI();
+    }
+
+    function renderMenu() {
+      const container = document.getElementById("menuContainer");
+      const q = searchQuery.trim().toLowerCase();
+
+      const html = menuData
+        .filter(sec => activeCategory === "Все" || sec.category === activeCategory)
+        .map(sec => {
+          const filteredItems = sec.items.filter(item =>
+            item.name.toLowerCase().includes(q) ||
+            (item.desc && item.desc.toLowerCase().includes(q))
+          );
+
+          if (!filteredItems.length) return "";
+
+          return `
+            <section class="category-section">
+              <div class="category-header">
+                <h2>${sec.category}</h2>
+                ${sec.note ? `<div class="category-note">${sec.note}</div>` : ""}
+              </div>
+              <div class="menu-grid">
+                ${filteredItems.map(item => {
+                  const qty = cart[item.id] || 0;
+                  return `
+                    <div class="dish-card">
+                      <div>
+                        <div class="dish-top">
+                          <div class="dish-name">${item.name}</div>
+                          <span class="dish-weight">${item.weight}</span>
+                        </div>
+                        ${item.desc ? `<div class="dish-desc">${item.desc}</div>` : `<div class="dish-desc"></div>`}
+                      </div>
+                      <div class="dish-bottom">
+                        <div class="dish-price">${item.price} ₽</div>
+                        ${qty === 0
+                          ? `<button class="add-btn" onclick="changeQty('${item.id}', 1)">+ В заказ</button>`
+                          : `<div class="qty-control">
+                               <button onclick="changeQty('${item.id}', -1)">−</button>
+                               <span>${qty}</span>
+                               <button onclick="changeQty('${item.id}', 1)">+</button>
+                             </div>`
+                        }
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </section>
+          `;
+        }).join("");
+
+      container.innerHTML = html || `<p style="text-align:center; color: var(--muted); padding: 30px 0;">По вашему запросу ничего не найдено.</p>`;
+    }
+
+    function updateCartUI() {
+      const bar = document.getElementById("cartBar");
+      let count = 0;
+      let total = 0;
+      Object.entries(cart).forEach(([id, qty]) => {
+        count += qty;
+        total += allItemsMap[id].price * qty;
+      });
+
+      if (count > 0) {
+        bar.classList.add("visible");
+        document.getElementById("cartCount").textContent = `В заказе: ${count} поз.`;
+        document.getElementById("cartTotal").textContent = `${total} ₽ →`;
+      } else {
+        bar.classList.remove("visible");
+        closeModal();
+      }
+      renderCartModal();
+    }
+
+    function renderCartModal() {
+      const list = document.getElementById("cartItemsList");
+      let total = 0;
+      const entries = Object.entries(cart);
+
+      list.innerHTML = entries.map(([id, qty]) => {
+        const item = allItemsMap[id];
+        const sum = item.price * qty;
+        total += sum;
+        return `
+          <div class="cart-item">
+            <div>
+              <strong>${item.name}</strong>
+              <div style="color: var(--muted); font-size: 12px;">${item.price} ₽ × ${qty}</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <strong>${sum} ₽</strong>
+              <button class="add-btn" onclick="changeQty('${id}', -1)">−</button>
+              <button class="add-btn" onclick="changeQty('${id}', 1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("modalTotal").textContent = `${total} ₽`;
+    }
+
+    function openModal() {
+      renderCartModal();
+      document.getElementById("orderModal").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("orderModal").classList.remove("open");
+    }
+
+    function sendWhatsAppOrder() {
+      const entries = Object.entries(cart);
+      if (!entries.length) return;
+
+      const name = document.getElementById("clientName").value.trim() || "Гость";
+      const comment = document.getElementById("clientComment").value.trim();
+
+      let total = 0;
+      const lines = entries.map(([id, qty], i) => {
+        const item = allItemsMap[id];
+        const sum = item.price * qty;
+        total += sum;
+        return `${i + 1}. ${item.name} — ${qty} шт. (${sum} ₽)`;
+      });
+
+      let message = `Здравствуйте! Хочу сделать заказ навынос в Трактире «На Яхроме»:\n\n`;
+      message += lines.join("\n");
+      message += `\n\nИтого: ${total} ₽\nИмя: ${name}`;
+      if (comment) message += `\nКомментарий: ${comment}`;
+
+      const url = `https://wa.me/79051376330?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    }
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      renderMenu();
+    });
+
+    renderTabs();
+    renderMenu();
+  </script>
+</body>
+</html>
