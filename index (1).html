@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трактир «На Яхроме» — Домашняя кухня и актуальное меню</title>
+    <style>
+        :root {
+            --bg-cream: #faf6f0;
+            --bg-card: #ffffff;
+            --primary-brown: #4a2e1b;
+            --accent-gold: #c88a36;
+            --accent-gold-hover: #b07628;
+            --text-dark: #2c221e;
+            --text-muted: #6e5d54;
+            --max-blue: #0077ff;
+            --max-blue-dark: #0055dd;
+            --border-light: #e8dfd5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3b2313 0%, #5c3821 100%);
+            color: #ffffff;
+            padding: 48px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-gold);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(200, 138, 54, 0.25);
+            border: 1px solid var(--accent-gold);
+            color: #ffdca8;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        header h1 {
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        header p.subtitle {
+            max-width: 600px;
+            margin: 0 auto 28px;
+            font-size: 16px;
+            color: #e8dcd3;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .max-chat-btn {
+            background: linear-gradient(135deg, var(--max-blue) 0%, var(--max-blue-dark) 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(0, 119, 255, 0.35);
+        }
+
+        .max-chat-btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 119, 255, 0.5);
+        }
+
+        .phone-btn {
+            background-color: var(--accent-gold);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(200, 138, 54, 0.3);
+        }
+
+        .phone-btn:hover {
+            background-color: var(--accent-gold-hover);
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 36px 20px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 42px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(74, 46, 27, 0.04);
+        }
+
+        .feature-card h3 {
+            font-size: 17px;
+            color: var(--primary-brown);
+            margin-bottom: 6px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 26px;
+            color: var(--primary-brown);
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            text-align: center;
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .search-box {
+            max-width: 480px;
+            margin: 0 auto 28px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 13px 18px;
+            font-size: 15px;
+            border: 1px solid #d5c7b8;
+            border-radius: 12px;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .menu-category {
+            margin-bottom: 32px;
+        }
+
+        .menu-category h3 {
+            font-size: 20px;
+            color: var(--primary-brown);
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+        }
+
+        .menu-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .menu-info h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .menu-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .menu-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-brown);
+            background-color: #f6efe6;
+            padding: 4px 10px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .contact-banner {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: 0 4px 16px rgba(74, 46, 27, 0.05);
+        }
+
+        .contact-banner h2 {
+            font-size: 24px;
+            color: var(--primary-brown);
+            margin-bottom: 10px;
+        }
+
+        .contact-banner p {
+            color: var(--text-muted);
+            max-width: 540px;
+            margin: 0 auto 22px;
+            font-size: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-light);
+            margin-top: 40px;
+        }
+
+        .max-icon {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 540px) {
+            header h1 {
+                font-size: 26px;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="badge">Домашняя русская кухня • Уютное кафе</div>
+    <h1>Трактир «На Яхроме»</h1>
+    <p class="subtitle">Сытные завтраки, горячие блюда в горшочках, наваристые супы, домашние хинкали, свежая выпечка и натуральные напитки</p>
+    <div class="hero-actions">
+        <a href="https://web.max.ru/496280515" target="_blank" rel="noopener noreferrer" class="btn max-chat-btn">
+            <svg class="max-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.03 2 11C2 13.39 3.05 15.56 4.76 17.16L3.65 21.35C3.52 21.84 3.98 22.27 4.46 22.11L8.88 20.64C9.87 20.88 10.92 21 12 21C17.52 21 22 16.97 22 12C22 7.03 17.52 2 12 2Z" fill="white"/>
+                <path d="M7.5 14.5V9.5L10.2 12.8L12.9 9.5V14.5" stroke="#0077FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="15.8" cy="12" r="1.5" fill="#0077FF"/>
+            </svg>
+            <span>Написать в MAX</span>
+        </a>
+        <a href="tel:+79051376330" class="btn phone-btn">
+            <span>📞 +7 (905) 137-63-30</span>
+        </a>
+    </div>
+</header>
+
+<div class="container">
+    <section class="features">
+        <div class="feature-card">
+            <h3>🕒 Фирменные блюда</h3>
+            <p>Готовим для вас с 09:00 до 20:30. Среднее время ожидания горячих блюд — 15–20 минут.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🥟 Домашние хинкали и пельмени</h3>
+            <p>Лепим вручную из натурального мяса. Подача сочных хинкали — от 3 штук.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🍲 Питание в уютном зале</h3>
+            <p>Свежие горячие обеды, сытные завтраки, домашняя выпечка и травяные чаи.</p>
+        </div>
+    </section>
+
+    <section id="menu">
+        <h2 class="section-title">Меню трактира</h2>
+        <p class="section-desc">Актуальные блюда для гостей нашего зала. Воспользуйтесь поиском, чтобы быстро найти нужное блюдо.</p>
+
+        <div class="search-box">
+            <input type="text" id="menuSearch" placeholder="Поиск по меню (например: хинкали, борщ, сырники)...">
+        </div>
+
+        <div class="menu-category">
+            <h3>Сытные завтраки</h3>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Домашние сырники со сметаной</h4>
+                        <p>Из фермерского творога с ванилью, подаются со сметаной или вареньем</p>
+                    </div>
+                    <div class="menu-price">240 ₽</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Яичница-глазунья по-деревенски</h4>
+                        <p>Из трёх яиц с обжаренным беконом, томатами и зеленью</p>
+                    </div>
+                    <div class="menu-price">220 ₽</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Каша овсяная на молоке</h4>
+                        <p>С кусочком сливочного масла и сезонными ягодами</p>
+                    </div>
+                    <div class="menu-price">160 ₽</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-category">
+            <h3>Наваристые супы</h3>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Борщ трактирный с говядиной</h4>
+                        <p>Подаётся со сметаной, чесночными пампушками и салом</p>
+                    </div>
+                    <div class="menu-price">320 ₽</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Солянка сборная мясная</h4>
+                        <p>Насыщенный бульон с копчёностями, маслинами, лимоном и сметаной</p>
+                    </div>
+                    <div class="menu-price">350 ₽</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Лапша куриная домашняя</h4>
+                        <p>С нежным куриным филе, домашней лапшой и свежей зеленью</p>
+                    </div>
+                    <div class="menu-price">250 ₽</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-category">
+            <h3>Горячие блюда и ручная лепка</h3>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Хинкали домашние (1 шт.)</h4>
+                        <p>Сочная начинка из свинины и говядины с зеленью. Заказ от 3 штук</p>
+                    </div>
+                    <div class="menu-price">85 ₽</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Пельмени ручной лепки</h4>
+                        <p>Подаются со сливочным маслом, сметаной и чёрным перцем</p>
+                    </div>
+                    <div class="menu-price">310 ₽</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Жаркое по-домашнему в горшочке</h4>
+                        <p>Томлёная свинина с картофелем, грибами, луком и сырной корочкой</p>
+                    </div>
+                    <div class="menu-price">390 ₽</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-category">
+            <h3>Свежая выпечка и напитки</h3>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Пирожки печёные в ассортименте</h4>
+                        <p>С картошкой, капустой, мясом или яблоком</p>
+                    </div>
+                    <div class="menu-price">75 ₽</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Морс клюквенный домашний (0,5 л)</h4>
+                        <p>Натуральный освежающий напиток из лесной клюквы</p>
+                    </div>
+                    <div class="menu-price">140 ₽</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-info">
+                        <h4>Чай травяной в чайнике (600 мл)</h4>
+                        <p>Чёрный или зелёный чай с чабрецом, мятой и душицей</p>
+                    </div>
+                    <div class="menu-price">190 ₽</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-banner">
+        <h2>Ждём вас в гости!</h2>
+        <p>Работаем ежедневно с 09:00 до 20:30. Если у вас есть вопросы по составу блюд или работе зала — напишите нам в чат MAX или позвоните.</p>
+        <div class="hero-actions">
+            <a href="https://web.max.ru/496280515" target="_blank" rel="noopener noreferrer" class="btn max-chat-btn">
+                <svg class="max-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.03 2 11C2 13.39 3.05 15.56 4.76 17.16L3.65 21.35C3.52 21.84 3.98 22.27 4.46 22.11L8.88 20.64C9.87 20.88 10.92 21 12 21C17.52 21 22 16.97 22 12C22 7.03 17.52 2 12 2Z" fill="white"/>
+                    <path d="M7.5 14.5V9.5L10.2 12.8L12.9 9.5V14.5" stroke="#0077FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="15.8" cy="12" r="1.5" fill="#0077FF"/>
+                </svg>
+                <span>Чат в MAX</span>
+            </a>
+            <a href="tel:+79051376330" class="btn phone-btn">
+                <span>Позвонить: 8 (905) 137-63-30</span>
+            </a>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>© 2026 Трактир «На Яхроме» • Домашняя кухня для гостей зала</p>
+</footer>
+
+<script>
+    document.getElementById('menuSearch').addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase().trim();
+        const items = document.querySelectorAll('.menu-item');
+        const categories = document.querySelectorAll('.menu-category');
+
+        items.forEach(item => {
+            const title = item.querySelector('h4').textContent.toLowerCase();
+            const desc = item.querySelector('p').textContent.toLowerCase();
+            if (title.includes(query) || desc.includes(query)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        categories.forEach(cat => {
+            const visibleItems = Array.from(cat.querySelectorAll('.menu-item')).filter(i => i.style.display !== 'none');
+            cat.style.display = visibleItems.length > 0 ? 'block' : 'none';
+        });
+    });
+</script>
+
+</body>
+</html>
